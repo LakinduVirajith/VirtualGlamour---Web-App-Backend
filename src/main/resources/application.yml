@@ -1,0 +1,53 @@
+#PORT
+server:
+  port: 8080
+
+#ACTIVE PROFILE
+spring:
+  profiles:
+    active: dev
+  jpa:
+    open-in-view: false
+---
+#DEV PROFILE
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    url: jdbc:mysql://localhost:3306/virtual_glamour
+    password: Lakindu@MySQL
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+---
+#QA PROFILE
+spring:
+  config:
+    activate:
+      on-profile: qa
+  datasource:
+    url: jdbc:mysql://localhost:3306/qa_db
+    username: root
+    password: "SQL PASSWORD"
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    show-sql: true
+
+---
+#PROD PROFILE
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mysql://localhost:3306/prod_db
+    username: root
+    password: "SQL PASSWORD"
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    show-sql: true
