@@ -2,12 +2,36 @@
 server:
   port: 8080
 
+#BASE URL
+base:
+  url: http://localhost:8080
+
+#JWT
+application:
+  security:
+    jwt:
+      secret-key: e959699588321464067931aa1110b82d86cbf5a16d71f490cb8f5fa9d6dda0d8
+      expiration: 7200000 #TWO HOURS
+      refresh-token:
+        expiration: 2419200000 #ONE MONTH
+
 #ACTIVE PROFILE
 spring:
   profiles:
     active: dev
   jpa:
     open-in-view: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: virtual.glamour.vp@gmail.com
+    password: vhsyvbpxlipikfke
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 ---
 #DEV PROFILE
 spring:
