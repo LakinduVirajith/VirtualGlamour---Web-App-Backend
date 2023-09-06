@@ -1,6 +1,5 @@
 package com.web.app.virtual.glamour.dto;
 
-import com.web.app.virtual.glamour.entity.ProductStock;
 import com.web.app.virtual.glamour.enums.Category;
 import com.web.app.virtual.glamour.enums.Expression;
 import com.web.app.virtual.glamour.enums.Weather;

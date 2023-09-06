@@ -7,6 +7,7 @@ import com.web.app.virtual.glamour.dto.ProductStockDTO;
 import com.web.app.virtual.glamour.entity.Product;
 import com.web.app.virtual.glamour.entity.ProductStock;
 import com.web.app.virtual.glamour.entity.User;
+import com.web.app.virtual.glamour.exception.BadRequestException;
 import com.web.app.virtual.glamour.exception.NotFoundException;
 import com.web.app.virtual.glamour.repository.ProductRepository;
 import com.web.app.virtual.glamour.repository.ProductStockRepository;
@@ -34,8 +35,12 @@ public class ProductServiceImpl implements ProductService{
     private final ModelMapper modelMapper;
 
     @Override
-    public ProductDTO addProduct(ProductDTO productDTO) throws NotFoundException {
+    public ProductDTO addProduct(ProductDTO productDTO) throws NotFoundException, BadRequestException {
         User user = commonFunctions.getUser();
+
+        if(productDTO.getProductStockDTOS().isEmpty()){
+            throw new BadRequestException("Please add at least one product option before proceeding.");
+        }
 
         // PRODUCT STORING
         Product product = new Product();
@@ -61,9 +66,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<ProductDTO> getAllProducts() throws NotFoundException {
-        User user = commonFunctions.getUser();
+        Long userId = commonFunctions.getUserId();
 
-        List<Product> products = productRepository.findAllByUserUserId(user.getUserId());
+        List<Product> products = productRepository.findAllByUserUserId(userId);
         if (products.isEmpty()) {
             throw new NotFoundException("No any products found for the vendor");
         }

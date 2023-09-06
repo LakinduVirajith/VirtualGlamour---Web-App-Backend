@@ -2,6 +2,7 @@ package com.web.app.virtual.glamour.service;
 
 import com.web.app.virtual.glamour.common.ResponseMessage;
 import com.web.app.virtual.glamour.dto.ProductDTO;
+import com.web.app.virtual.glamour.exception.BadRequestException;
 import com.web.app.virtual.glamour.exception.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface ProductService {
-    ProductDTO addProduct(ProductDTO productDTO) throws NotFoundException;
+    ProductDTO addProduct(ProductDTO productDTO) throws NotFoundException, BadRequestException;
 
     List<ProductDTO> getAllProducts() throws NotFoundException;
 
