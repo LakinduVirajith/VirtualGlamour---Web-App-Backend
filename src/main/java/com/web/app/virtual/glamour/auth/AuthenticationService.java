@@ -5,11 +5,7 @@ import com.web.app.virtual.glamour.exception.BadRequestException;
 import com.web.app.virtual.glamour.exception.ForbiddenException;
 import com.web.app.virtual.glamour.exception.InternalServerException;
 import com.web.app.virtual.glamour.exception.NotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
-
-import java.io.IOException;
 
 public interface AuthenticationService {
 

@@ -1,6 +1,5 @@
 package com.web.app.virtual.glamour.entity;
 
-import jakarta.annotation.security.DenyAll;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
