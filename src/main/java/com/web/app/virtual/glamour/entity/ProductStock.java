@@ -21,6 +21,8 @@ public class ProductStock {
     @NotNull
     private String sizeName;
 
+    private String sizeImage;
+
     @NotNull
     private String color;
 
