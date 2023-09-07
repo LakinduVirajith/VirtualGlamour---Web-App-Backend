@@ -62,7 +62,14 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/vendor/**").hasAnyAuthority(VENDOR_CREATE.name(), ADMIN_CREATE.name())
                         .requestMatchers(HttpMethod.PUT, "/api/v1/vendor/**").hasAnyAuthority(VENDOR_UPDATE.name(), ADMIN_UPDATE.name())
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/vendor/**").hasAnyAuthority(VENDOR_DELETE.name(), ADMIN_DELETE.name())
+
+                        .requestMatchers("/api/v1/storage/**").hasAnyRole(VENDOR.name(), ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/api/v1/storage/**").hasAnyAuthority(VENDOR_READ.name(), ADMIN_READ.name())
+                        .requestMatchers(HttpMethod.POST, "/api/v1/storage/**").hasAnyAuthority(VENDOR_CREATE.name(), ADMIN_CREATE.name())
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/storage/**").hasAnyAuthority(VENDOR_UPDATE.name(), ADMIN_UPDATE.name())
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/storage/**").hasAnyAuthority(VENDOR_DELETE.name(), ADMIN_DELETE.name())
                         .anyRequest().authenticated())
+
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(JwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

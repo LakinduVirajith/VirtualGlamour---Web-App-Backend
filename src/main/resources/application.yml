@@ -6,6 +6,13 @@ server:
 base:
   url: http://localhost:8080
 
+#FIREBASE
+firebase:
+  storage:
+    bucket: virtualglamour-55401.appspot.com
+    folders:
+      path: product-images
+
 #JWT
 application:
   security:
