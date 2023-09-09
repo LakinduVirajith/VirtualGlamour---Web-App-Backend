@@ -13,12 +13,19 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductStockDTO {
+public class ShoppingCartItemDTO {
 
-    private Long productStockId;
+    @NotNull
+    private Long cartId;
+
+    @NotNull
+    private String productName;
 
     @NotNull
     private String sizeName;
+
+    @NotNull
+    private String color;
 
     private String sizeImage;
 
@@ -32,7 +39,7 @@ public class ProductStockDTO {
     private LocalDate discountEndDate;
 
     @NotNull
-    private String color;
+    private Integer quantity;
 
     @NotNull
     private Integer stockQuantity;

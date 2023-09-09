@@ -40,10 +40,10 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private UserRole role = UserRole.USER;
+    private UserRole role;
 
     @NotNull
-    private Boolean isActive = false;
+    private Boolean isActive;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ActivationToken activationToken;
@@ -54,8 +54,11 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ForgotOTP forgotOTP;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Product> products;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<ShoppingCartItem> shoppingCart;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

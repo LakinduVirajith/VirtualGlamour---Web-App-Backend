@@ -2,9 +2,9 @@ package com.web.app.virtual.glamour.enums;
 
 public enum Weather {
 
-    SUNNY,
+    Sunny,
 
-    RAINY,
+    Rainy,
 
-    SNOWY
+    Snowy
 }

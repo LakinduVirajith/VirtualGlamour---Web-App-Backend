@@ -30,15 +30,6 @@ public class ProductDTO {
 
     private String description;
 
-    @NotNull
-    private BigDecimal price;
-
-    private BigDecimal discountAmount;
-
-    private LocalDate discountStartDate;
-
-    private LocalDate discountEndDate;
-
     @Enumerated(EnumType.STRING)
     @NotNull
     private Category categoryType;
