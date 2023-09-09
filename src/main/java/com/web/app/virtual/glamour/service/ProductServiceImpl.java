@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ public class ProductServiceImpl implements ProductService{
     private final ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public ProductDTO addProduct(ProductDTO productDTO) throws NotFoundException, BadRequestException {
         User user = commonFunctions.getUser();
 
@@ -52,15 +54,20 @@ public class ProductServiceImpl implements ProductService{
 
         // PRODUCT STOCK STORING
         List<ProductStockDTO> productStockDTOS = productDTO.getProductStockDTOS();
+        List<ProductStockDTO> newProductStockDTOS = new ArrayList<>();
 
         for (ProductStockDTO productStockDTO: productStockDTOS) {
             ProductStock productStock = new ProductStock();
             modelMapper.map(productStockDTO, productStock);
 
             productStock.setProduct(product);
-            stockRepository.save(productStock);
+            productStock = stockRepository.save(productStock);
+            productStockDTO.setProductStockId(productStock.getProductStockId());
+
+            newProductStockDTOS.add(productStockDTO);
         }
 
+        productDTO.setProductStockDTOS(newProductStockDTOS);
         return productDTO;
     }
 
@@ -143,26 +150,51 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
     public ProductDTO updateProduct(Long productId, ProductDTO productDTO) throws NotFoundException {
-        Optional<Product> optionalProduct = productRepository.findById(productId);
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("No any Product found with the given Id"));
 
-        // PRODUCT NOT FOUND EXCEPTION
-        if(optionalProduct.isEmpty()){
-            throw new NotFoundException("No any Product to found given Id");
+        // SET PRODUCT DETAILS
+        product.setProductName(productDTO.getProductName());
+        if(productDTO.getProductImages() != null){
+            product.setProductImages(productDTO.getProductImages());
         }
-        Product product = optionalProduct.get();
+        if(productDTO.getDescription() != null){
+            product.setDescription(productDTO.getDescription());
+        }
+        product.setCategoryType(productDTO.getCategoryType());
+        if(productDTO.getExpressionRecommendation() != null){
+            product.setExpressionRecommendation(productDTO.getExpressionRecommendation());
+        }
+        if(productDTO.getWeatherRecommendation() != null){
+            product.setWeatherRecommendation(productDTO.getWeatherRecommendation());
+        }
+        product.setIsListed(true);
 
-        // PRODUCT STORING
-        modelMapper.map(productDTO, product);
-        productDTO.setProductStockDTOS(null);
+        // SAVE THE UPDATED PRODUCT
         product = productRepository.save(product);
+
+        // MAP THE UPDATED PRODUCT TO THE DTO
+        productDTO.setProductStockDTOS(null);
         modelMapper.map(product, productDTO);
+
+        List<ProductStock> stocks = product.getProductStocks();
+        List<ProductStockDTO> stockDTOS = new ArrayList<>();
+        for (ProductStock stock : stocks) {
+            ProductStockDTO stockDTO = new ProductStockDTO();
+            modelMapper.map(stock, stockDTO);
+
+            stockDTOS.add(stockDTO);
+        }
+        productDTO.setProductStockDTOS(stockDTOS);
 
         return productDTO;
     }
 
     @Override
     public ResponseEntity<ResponseMessage> listedOption(Long productId) throws NotFoundException {
+
         Optional<Product> optionalProduct = productRepository.findById(productId);
 
         // PRODUCT NOT FOUND EXCEPTION
@@ -190,13 +222,11 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ResponseEntity<ResponseMessage> deleteProduct(Long productId) throws NotFoundException {
-        Optional<Product> optionalProduct = productRepository.findById(productId);
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("No any Product found with the given Id"));
 
-        // PRODUCT NOT FOUND EXCEPTION
-        if(optionalProduct.isEmpty()){
-            throw new NotFoundException("No any Product to found given Id");
-        }
-
+        product.setUser(null);
+        productRepository.save(product);
         productRepository.deleteById(productId);
 
         ResponseMessage successResponse = new ResponseMessage();

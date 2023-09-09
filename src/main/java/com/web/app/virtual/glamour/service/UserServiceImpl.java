@@ -5,6 +5,7 @@ import com.web.app.virtual.glamour.common.ResponseMessage;
 import com.web.app.virtual.glamour.dto.UserDTO;
 import com.web.app.virtual.glamour.entity.ActivationToken;
 import com.web.app.virtual.glamour.entity.User;
+import com.web.app.virtual.glamour.enums.UserRole;
 import com.web.app.virtual.glamour.exception.BadRequestException;
 import com.web.app.virtual.glamour.exception.ConflictException;
 import com.web.app.virtual.glamour.exception.InternalServerException;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -34,6 +36,7 @@ public class UserServiceImpl implements UserService{
     private final ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public ResponseEntity<ResponseMessage> register(UserDTO userDTO) throws ConflictException, InternalServerException {
         Optional<User> emailCondition = userRepository.findByEmail(userDTO.getEmail());
 
@@ -53,7 +56,12 @@ public class UserServiceImpl implements UserService{
         ActivationToken activationToken = ActivationToken.builder()
                 .activationToken(token).activationTokenExpiry(tokenExpiry).build();
 
+        // DEFAULT VALUES
         userDTO.setIsActive(false);
+        if(userDTO.getRole() == null){
+            userDTO.setRole(UserRole.USER);
+        }
+
         User user = new User();
         modelMapper.map(userDTO, user);
         user.setActivationToken(activationToken);

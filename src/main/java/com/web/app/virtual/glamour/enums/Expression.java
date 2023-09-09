@@ -2,11 +2,11 @@ package com.web.app.virtual.glamour.enums;
 
 public enum Expression {
 
-    JOY,
+    Joy,
 
-    SORROW,
+    Sorrow,
 
-    ANGER,
+    Anger,
 
     Surprise
 }
