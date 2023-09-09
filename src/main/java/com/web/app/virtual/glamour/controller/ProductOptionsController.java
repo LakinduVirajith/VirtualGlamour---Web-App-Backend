@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/vendor/product/options")
 @RequiredArgsConstructor
-@Tag(name = "Product Options Controller")
+@Tag(name = "Product Options Controllers")
 public class ProductOptionsController {
 
     private final ProductOptionsService optionsService;
