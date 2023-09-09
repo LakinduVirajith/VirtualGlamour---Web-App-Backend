@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/user/cart")
 @RequiredArgsConstructor
-@Tag(name = "Shopping Cart Controller")
+@Tag(name = "Shopping Cart Controllers")
 public class ShoppingCartItemController {
 
     private final ShoppingCartItemService cartService;
