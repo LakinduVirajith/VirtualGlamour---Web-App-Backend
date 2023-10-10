@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @Operation(summary = "Reset Password with OTP", description = "Initiate password reset by sending an OTP to the user's email. Authenticate with the OTP and set a new password.")
-    @PostMapping("/rest-password")
+    @PostMapping("/reset-password")
     public ResponseEntity<ResponseMessage> restPassword(String email, String password) throws NotFoundException {
         return userService.restPassword(email, password);
     }
